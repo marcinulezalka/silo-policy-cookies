@@ -2,44 +2,41 @@
 
 namespace Silo\Policy\Cookies;
 
-/**
- * Class CookieOrchestrator
- * * Orkiestrator odpowiedzialny za wstrzykiwanie sekcji Cookies do front-endu.
- * Zarządza stanem wyświetlania komponentu i komunikacją z bramką (gateway).
- */
 class CookieOrchestrator
 {
-    private array $lang;
-    private int $langId;
-    private string $gatewayUrl;
+    private array $config;
+    private array $translations;
 
-    /**
-     * @param array $sessionLang Dane językowe $_SESSION['lang']
-     * @param int $langId Identyfikator języka $_SESSION['lang_id']
-     * @param string $gatewayUrl Adres URL publicznej bramki (np. /gate/cookies)
-     */
-    public function __construct(array $sessionLang, int $langId, string $gatewayUrl = '/silo-gateway.php?section=cookies')
+    public function __construct(array $config, string $langCode)
     {
-        $this->lang = $sessionLang;
-        $this->langId = $langId;
-        $this->gatewayUrl = $gatewayUrl;
+        $this->config = $config;
+        $this->translations = $this->loadTranslations($langCode);
     }
 
-    /**
-     * Główna metoda renderująca sekcję okna na froncie.
-     * Wykorzystuje mechanizm Prior Consent (blokada do czasu zgody).
-     */
+    private function loadTranslations(string $langCode): array
+    {
+        $file = "{$this->config['paths']['lang']}/{$langCode}/cookies.php";
+        return file_exists($file) ? require $file : [];
+    }
+
     public function render(): void
     {
         if (isset($_COOKIE['cookie_agreement_confirmed']) && $_COOKIE['cookie_agreement_confirmed'] === '1') {
             return;
         }
 
-        $config = $this->prepareConfig();
-        $apiEndpoint = $this->gatewayUrl;
+        $config = [
+            'guiOptions' => $this->config['gui_options'],
+            'categories' => $this->config['categories'],
+            'language'   => [
+                'default' => 'pl',
+                'translations' => ['pl' => $this->translations]
+            ]
+        ];
+        
+        $apiEndpoint = $this->config['gateway_url'];
+        $authToken = $this->config['auth_token'];
 
-        require __DIR__ . '/Views/template.php';
+        require "{$this->config['paths']['views']}/template.php";
     }
-
-    private function prepareConfig(): array { /* Mapowanie z Twojego cookies.php */ }
 }
