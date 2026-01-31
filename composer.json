@@ -1,6 +1,6 @@
 {
     "name": "silo/policy-cookies",
-    "description": "Hermetyczny moduł orkiestracji polityki cookies dla Webeshop",
+    "description": "Orchestration module for cookie consent policy with Bearer Token security.",
     "type": "library",
     "license": "MIT",
     "autoload": {
