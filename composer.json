@@ -1,7 +1,8 @@
 {
     "name": "silo/policy-cookies",
-    "description": "Hermetyczny moduł cookies zgodny z orkiestracją",
+    "description": "Hermetyczny moduł orkiestracji polityki cookies dla Webeshop",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Silo\\": "src/"
