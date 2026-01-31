@@ -1,8 +1,18 @@
-# Silo Policy Cookies Module
+# Silo \ Policy \ Cookies
 
-Moduł zainstalowany jako paczka Git wewnątrz struktury projektu.
+Moduł orkiestracji zgód cookies zainstalowany jako zewnętrzna paczka Git.
 
-## Instalacja (Git Submodule)
-Jeśli nie używasz pełnego Composera, zainstaluj w folderze vendor:
-```bash
-git submodule add [https://github.com/twoj-login/silo-policy-cookies.git](https://github.com/twoj-login/silo-policy-cookies.git) vendor/silo/policy-cookies
+## Instalacja
+1. Pobierz paczkę do katalogu vendor:
+   `git clone [url-repo] vendor/silo/policy-cookies`
+2. Skonfiguruj bramkę publiczną:
+   `chmod +x vendor/silo/policy-cookies/bin/setup-links.sh`
+   `./vendor/silo/policy-cookies/bin/setup-links.sh`
+
+## Użycie (Orkiestracja)
+W swoim projekcie wywołaj:
+```php
+use Silo\Policy\Cookies\CookieOrchestrator;
+
+$cookies = new CookieOrchestrator($_SESSION['lang'], $_SESSION['lang_id']);
+$cookies->render();
