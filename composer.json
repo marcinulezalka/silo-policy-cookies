@@ -1,0 +1,13 @@
+{
+    "name": "silo/policy-cookies",
+    "description": "Hermetyczny moduł cookies zgodny z orkiestracją",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Silo\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0"
+    }
+}
