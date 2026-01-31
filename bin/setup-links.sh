@@ -1,22 +1,14 @@
 #!/bin/bash
-
-# Silo Security Script - Automatyzacja bramek publicznych
-# Uruchamiać z głównego katalogu projektu: ./vendor/silo/policy-cookies/bin/setup-links.sh
-
 PROJECT_ROOT=$(pwd)
-PUBLIC_DIR="$PROJECT_ROOT/public"
-GATEWAY_FILE="$PUBLIC_DIR/silo-gateway.php"
-SOURCE_HANDLER="$PROJECT_ROOT/vendor/silo/policy-cookies/src/Policy/Cookies/Gateway/handler.php"
+PACKAGE_PATH="$PROJECT_ROOT/vendor/silo/policy-cookies"
 
-echo "--- Silo: Konfiguracja połączeń publicznych ---"
+SOURCE="$PACKAGE_PATH/src/Policy/Cookies/Gateway/handler.php"
+TARGET="$PROJECT_ROOT/public/silo-gateway.php"
 
-if [ ! -d "$PUBLIC_DIR" ]; then
-    echo "Błąd: Nie znaleziono katalogu /public w $PROJECT_ROOT"
+if [ -f "$SOURCE" ]; then
+    ln -sf "$SOURCE" "$TARGET"
+    echo "Silo: Gateway symlinked to $TARGET"
+else
+    echo "Silo Error: Source handler not found at $SOURCE"
     exit 1
 fi
-
-# Tworzenie bezpiecznego symlinka
-ln -sf "$SOURCE_HANDLER" "$GATEWAY_FILE"
-
-echo "Sukces: Utworzono bramkę: $GATEWAY_FILE"
-echo "Bramka wskazuje na: $SOURCE_HANDLER"
